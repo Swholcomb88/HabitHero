@@ -1,0 +1,11 @@
+{
+  "name": "Habit Hero",
+  "short_name": "Habit Hero",
+  "description": "Your daily workout and wellness tracker",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#0d0d0d",
+  "theme_color": "#e8ff47",
+  "orientation": "portrait",
+  "icons": []
+}
