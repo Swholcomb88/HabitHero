@@ -326,6 +326,7 @@ function togW(i){
   chkAch(s);sS(s);rWL(s);uPD(s);
 }
 function togD(t,i){
+  t=["st","w","sk"][t];
   var btn=document.getElementById(t+"btn"+i),det=document.getElementById(t+"det"+i);
   var o=det.classList.contains("open");
   btn.classList.toggle("open",!o);det.classList.toggle("open",!o);
@@ -337,7 +338,7 @@ function rSL(s){
     +"<button class='cbtn' onclick='event.stopPropagation();togS(0)'>"+(s.sdT&&s.sdT["s0"]?"&#10003;":"&#9675;")+"</button>"
     +"</div>"
     +"<div class='wmeta'><span class='badge bt'>~15 min</span><span class='badge bs'>+5 pts</span></div>"
-    +"<button class='vbtn' id='stbtn0' onclick='togD("st",0)'>View Workout <span class='arr'>&#9660;</span></button>"
+    +"<button class='vbtn' id='stbtn0' onclick='togD(0,0)'>View Workout <span class='arr'>&#9660;</span></button>"
     +"<div class='wdet' id='stdet0'>"+SD+"</div>"
     +"</div>";
 }
@@ -354,7 +355,7 @@ function rWL(s){
       +"<span class='badge bc'>"+w.cal+"</span>"
       +"<span class='badge bf'>"+w.focus+"</span>"
       +"</div>"
-      +"<button class='vbtn' id='wbtn"+i+"' onclick='togD("w","+i+")'>View Workout <span class='arr'>&#9660;</span></button>"
+      +"<button class='vbtn' id='wbtn"+i+"' onclick='togD(1,'+i+')'>View Workout <span class='arr'>&#9660;</span></button>"
       +"<div class='wdet' id='wdet"+i+"'>"+WD[i]+"</div>"
       +"</div>";
   }).join("");
@@ -371,7 +372,7 @@ function rAL(s){
     +"<div class='slr'><input class='si' type='number' id='ki' placeholder='Reps completed...' min='1'><button class='slb' onclick='logK()'>Log Reps</button></div>"
     +"<div class='sm'>This month: <span>"+mr+" reps &bull; "+ms+" sessions</span></div>"
     +"</div>"
-    +"<button class='vbtn' id='skbtn0' onclick='togD("sk",0)'>View Workout <span class='arr'>&#9660;</span></button>"
+    +"<button class='vbtn' id='skbtn0' onclick='togD(2,0)'>View Workout <span class='arr'>&#9660;</span></button>"
     +"<div class='wdet' id='skdet0'>"+KD+"</div>"
     +"</div>";
 }
@@ -383,17 +384,17 @@ function uPD(s){
 function renderShop(s){
   var g=document.getElementById("SHOP");if(!g)return;
   var pts=s.tp||0,col=s.icons||[];
-  g.innerHTML=SHOP.map(function(item){
+  g.innerHTML=SHOP.map(function(item,ix){
     var isC=col.indexOf(item.id)>=0,canC=!isC&&pts>=item.pts,lk=!isC&&pts<item.pts;
     return "<div class='shi "+(isC?"cl":canC?"ul":"")+"'>"
       +"<img src='"+ICONS[item.id]+"' class='sic "+(lk?"lk":"")+"'>"
       +"<div class='sin'>"+item.name+"</div>"
-      +(isC?"<div class='slbd'>COLLECTED</div>":canC?"<div class='sip ok'>"+item.pts+" pts -- READY!</div><button class='scb' onclick='colI(""+item.id+"")''>Collect!</button>":"<div class='sip'>"+item.pts+" pts needed</div>")
+      +(isC?"<div class='slbd'>COLLECTED</div>":canC?"<div class='sip ok'>"+item.pts+" pts -- READY!</div><button class='scb' onclick='colI('+ix+')'>Collect!</button>":"<div class='sip'>"+item.pts+" pts needed</div>")
       +"</div>";
   }).join("");
 }
-function colI(id){
-  var s=gS(),item=SHOP.find(function(x){return x.id===id;});
+function colI(ix){
+  var s=gS(),item=SHOP[ix],id=item?item.id:null;
   if(!item)return;
   if(!s.icons)s.icons=[];
   if(s.icons.indexOf(id)>=0){toast("Already collected!");return;}
